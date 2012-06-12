@@ -24,7 +24,7 @@
     "ravenapp"  
 	],
   "dependencies" : {
-	  "ravendb": ">=0.0.5",
+	  "ravendb": ">=0.0.10",
     "argparse": ">=0.1.1"
   },
   "noAnalyze": true,
