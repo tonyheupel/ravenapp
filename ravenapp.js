@@ -1,4 +1,5 @@
 var fs = require('fs')
+  , path = require('path')
   , ravendb = require('ravendb')
   , ArgumentParser = require('argparse').ArgumentParser
 
@@ -18,19 +19,6 @@ var addFiles = function(appName, appDir, rootDir, db, callback) {
             else console.log('Added files for "' + filename + '"')
           })
         } else {
-          // Add attachment to ravendb
-          var mimeTypes = {   'text/html': /\.html$/
-                            , 'text/css': /\.css$/
-                            , 'text/javascript': /\.js$/
-          }
-          var mimeType = 'text/plain'
-          for(var type in mimeTypes) {
-            if (mimeTypes[type].test(filename)) {
-              mimeType = type
-              break
-            }
-          }
-
           // Save Attachment here
           var appRoot = 'apps/' + appName
           var docId = appRoot.replace(appDir, '')
@@ -40,7 +28,7 @@ var addFiles = function(appName, appDir, rootDir, db, callback) {
 
           // Add deleteAttachment to ravendb module
           db.deleteAttachment(docId, function(err, resp) {
-            db.saveAttachment(docId, fs.readFileSync(filename, 'UTF-8'), { 'Content-Type': mimeType }, function(err, result) {
+            db.saveAttachment(docId, fs.createReadStream(filename), function(err, result) {
               if (err) { callback(err); return; }
               else console.log('Saved "' + filename + '" to "' + docId + '"')
             })  
@@ -54,6 +42,9 @@ var addFiles = function(appName, appDir, rootDir, db, callback) {
 
 var saveApp = function(appName, appDir, dbUrl, dbName, cb) {
   if (typeof dbName === 'function') dbName = null
+
+  // Need to strip trailing /
+  appDir = appDir[appDir.length - 1] === '/' ? appDir.substring(0, appDir.length - 1) : appDir
 
   addFiles(appName, appDir, appDir, ravendb(dbUrl, dbName), function(e,r) {
     if (e) console.log('Error in saveApp: ' + e)
