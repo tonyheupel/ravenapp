@@ -1,7 +1,7 @@
 {
   "name": "ravenapp",
   "preferGlobal": "true",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Tony Heupel <tonyheupel@gmail.com>",
   "description": "A RavenApp bundler",
   "contributors": [ 
@@ -24,7 +24,7 @@
     "ravenapp"  
 	],
   "dependencies" : {
-	  "ravendb": ">=0.0.10",
+	  "ravendb": ">=0.0.14",
     "argparse": ">=0.1.1"
   },
   "noAnalyze": true,

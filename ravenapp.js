@@ -40,16 +40,26 @@ var addFiles = function(appName, appDir, rootDir, db, callback) {
   })
 }
 
-var saveApp = function(appName, appDir, dbUrl, dbName, cb) {
-  if (typeof dbName === 'function') dbName = null
-
+var saveApp = function(args, cb) {
+  
   // Need to strip trailing /
+  var appDir = args.directory
+    , appName = args.name
+    , dbUrl = args.store
+    , dbName = args.database
+    , ravenHqApiKey = args.apiKey
+    
   appDir = appDir[appDir.length - 1] === '/' ? appDir.substring(0, appDir.length - 1) : appDir
 
-  addFiles(appName, appDir, appDir, ravendb(dbUrl, dbName), function(e,r) {
-    if (e) console.log('Error in saveApp: ' + e)
-    else console.log('Finished saving app: ' + r)
-  })
+  var db = ravendb(dbUrl, dbName)
+  if (/ravenhq\.com/.test(dbUrl) && ravenHqApiKey) { 
+    db.useRavenHq(ravenHqApiKey, function(err, auth) { // If api key is null, this has no effect
+      addFiles(appName, appDir, appDir, db, function(e,r) {
+        if (e) console.log('Error in saveApp: ' + e)
+        else console.log('Finished saving app: ' + r)
+      })
+    })
+  }  
 }
 
 var parser = new ArgumentParser({
@@ -87,7 +97,15 @@ parser.addArgument(
     dest: 'database'
   }
 )
+parser.addArgument(
+  [ '-key', '--apikey'],
+  {
+    help: 'specity the api key to use with RavenHQ databases',
+    defaultValue: null,
+    dest: 'apiKey'
+  }
+)
 
 var args = parser.parseArgs();
 
-saveApp(args.name, args.directory, args.store, args.database)
+saveApp(args)
