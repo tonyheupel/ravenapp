@@ -23,7 +23,7 @@ var addFiles = function(appName, appDir, rootDir, db, callback) {
           var appRoot = 'apps/' + appName
           var docId = appRoot.replace(appDir, '')
 
-          //if (!/index\.html$/.test(filename)) 
+          //if (!/index\.html$/.test(filename))
           docId += filename.replace(appDir, '')
 
           // Add deleteAttachment to ravendb module
@@ -31,9 +31,9 @@ var addFiles = function(appName, appDir, rootDir, db, callback) {
             db.saveAttachment(docId, fs.createReadStream(filename), function(err, result) {
               if (err) { callback(err); return; }
               else console.log('Saved "' + filename + '" to "' + docId + '"')
-            })  
+            })
           })
-          
+
         }
       })
     })
@@ -41,25 +41,25 @@ var addFiles = function(appName, appDir, rootDir, db, callback) {
 }
 
 var saveApp = function(args, cb) {
-  
+
   // Need to strip trailing /
   var appDir = args.directory
     , appName = args.name
     , dbUrl = args.store
     , dbName = args.database
     , ravenHqApiKey = args.apiKey
-    
+
   appDir = appDir[appDir.length - 1] === '/' ? appDir.substring(0, appDir.length - 1) : appDir
 
   var db = ravendb(dbUrl, dbName)
-  if (/ravenhq\.com/.test(dbUrl) && ravenHqApiKey) { 
+  if (/ravenhq\.com/.test(dbUrl) && ravenHqApiKey) {
     db.useRavenHq(ravenHqApiKey, function(err, auth) { // If api key is null, this has no effect
       addFiles(appName, appDir, appDir, db, function(e,r) {
         if (e) console.log('Error in saveApp: ' + e)
         else console.log('Finished saving app: ' + r)
       })
     })
-  }  
+  }
 }
 
 var parser = new ArgumentParser({
