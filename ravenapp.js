@@ -64,7 +64,7 @@ var saveApp = function(args, cb) {
       if (e) console.log('Error in saveApp: ' + e)
       else console.log('Finished saving app: ' + r)
     })
-  }  
+  }
 }
 
 var parser = new ArgumentParser({
