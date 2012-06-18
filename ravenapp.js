@@ -4,7 +4,7 @@ var fs = require('fs')
   , ArgumentParser = require('argparse').ArgumentParser
 
 
-var version = '0.0.1' // update package.json
+var version = '0.0.2' // update package.json
 
 var addFiles = function(appName, appDir, rootDir, db, callback) {
   fs.readdir(rootDir, function(err, files) {
@@ -59,7 +59,12 @@ var saveApp = function(args, cb) {
         else console.log('Finished saving app: ' + r)
       })
     })
-  }
+  } else {
+    addFiles(appName, appDir, appDir, db, function(e,r) {
+      if (e) console.log('Error in saveApp: ' + e)
+      else console.log('Finished saving app: ' + r)
+    })
+  }  
 }
 
 var parser = new ArgumentParser({
