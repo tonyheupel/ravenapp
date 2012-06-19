@@ -57,12 +57,16 @@ var saveApp = function(args, cb) {
       addFiles(appName, appDir, appDir, db, function(e,r) {
         if (e) console.log('Error in saveApp: ' + e)
         else console.log('Finished saving app: ' + r)
+
+        cb(e,r)
       })
     })
   } else {
     addFiles(appName, appDir, appDir, db, function(e,r) {
       if (e) console.log('Error in saveApp: ' + e)
       else console.log('Finished saving app: ' + r)
+
+      cb(e,r)
     })
   }
 }
@@ -113,4 +117,7 @@ parser.addArgument(
 
 var args = parser.parseArgs();
 
-saveApp(args)
+saveApp(args, function(err, resp) {
+ if (err) console.log(err)
+ else console.error('Done.')
+})
