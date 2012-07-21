@@ -39,7 +39,9 @@
             return db.deleteAttachment(docId, function(err, resp) {
               return db.saveAttachment(docId, fs.createReadStream(filename), function(err, result) {
                 if (err != null) {
-                  callback(err);
+                  return callback(new Error("Error saving \"" + filename + "\": " + err), err, result);
+                } else if (((result != null ? result.statusCode : void 0) != null) === !201) {
+                  return callback(new Error("Problem saving \"" + filename + "\": " + result));
                 } else {
                   console.log("Saved \"" + filename + "\" to \"" + docId + "\"");
                   return callback(null, result);
@@ -74,8 +76,8 @@
       });
     } else {
       return addFiles(appName, appDir, appDir, db, function(e, r) {
-        if (typeof e === "function" ? e(console.log("Error in saveApp: " + e)) : void 0) {
-
+        if (e != null) {
+          console.log("Error in saveApp: " + e);
         } else {
           console.log("Finished saving app: " + r);
         }
@@ -123,10 +125,9 @@
   args = parser.parseArgs();
 
   saveApp(args, function(err, resp) {
-    if (typeof err === "function" ? err(console.log(err)) : void 0) {
-
+    if (err != null) {
+      return console.error(err);
     } else {
-      console.log(resp);
       return console.log('Done.');
     }
   });

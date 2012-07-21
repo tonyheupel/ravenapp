@@ -37,8 +37,9 @@ addFiles = (appName, appDir, rootDir, db, callback) ->
           db.deleteAttachment docId, (err, resp) ->
             db.saveAttachment docId, fs.createReadStream(filename), (err, result) ->
               if err?
-                callback(err)
-                return
+                callback(new Error("Error saving \"#{filename}\": #{err}"), err, result)
+              else if result?.statusCode? is not 201
+                callback(new Error("Problem saving \"#{filename}\": #{result}"))
               else
                 console.log "Saved \"#{filename}\" to \"#{docId}\""
                 callback(null, result)
@@ -65,7 +66,7 @@ saveApp = (args, cb) ->
         cb(e,r)
   else
     addFiles appName, appDir, appDir, db, (e,r) ->
-      if e? console.log "Error in saveApp: #{e}"
+      if e? then console.log "Error in saveApp: #{e}"
       else console.log "Finished saving app: #{r}"
 
       cb(e,r)
@@ -105,7 +106,6 @@ parser.addArgument [ '-key', '--apikey'],
 args = parser.parseArgs()
 
 saveApp args, (err, resp) ->
- if err? console.log err
+ if err? then console.error err
  else
-   console.log resp
    console.log 'Done.'
