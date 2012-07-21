@@ -1,7 +1,7 @@
 {
   "name": "ravenapp",
   "preferGlobal": "true",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "Tony Heupel <tonyheupel@gmail.com>",
   "description": "A RavenApp bundler",
   "contributors": [ 

@@ -11,7 +11,7 @@
 
   ArgumentParser = require('argparse').ArgumentParser;
 
-  version = '0.0.3';
+  version = '0.0.4';
 
   addFiles = function(appName, appDir, rootDir, db, callback) {
     return fs.readdir(rootDir, function(err, files) {

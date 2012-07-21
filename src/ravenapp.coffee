@@ -4,7 +4,7 @@ ravendb = require('ravendb')
 ArgumentParser = require('argparse').ArgumentParser
 
 
-version = '0.0.3' # update package.json
+version = '0.0.4' # update package.json
 
 addFiles = (appName, appDir, rootDir, db, callback) ->
   fs.readdir rootDir, (err, files) ->
