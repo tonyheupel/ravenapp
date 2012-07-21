@@ -69,49 +69,36 @@ saveApp = (args, cb) ->
       cb(e,r)
 
 
-parser = new ArgumentParser({
-  'version': version,
-  addHelp: true,
+parser = new ArgumentParser
+  'version': version
+  addHelp: true
   description: 'RavenApp builder'
-})
-parser.addArgument(
-  [ '-d', '--directory' ],
-  {
-    help: 'base directory for the RavenApp',
-    dest: 'directory'
-  }
-)
-parser.addArgument(
-  [ '-n', '--name' ],
-  {
-    help: 'the name of the RavenApp',
-    dest: 'name'
-  }
-)
-parser.addArgument(
-  [ '-s', '--store' ],
-  {
-    help: 'specify which data store to use (defaults to http://localhost:8080 if not specfied)',
-    defaultValue: 'http://localhost:8080',
-    dest: 'store'
-  }
-)
-parser.addArgument(
-  [ '-db', '--database'],
-  {
-    help: 'specify which database to use (defaults to "Default" if not specified)',
-    defaultValue: 'Default',
-    dest: 'database'
-  }
-)
-parser.addArgument(
-  [ '-key', '--apikey'],
-  {
-    help: 'specity the api key to use with RavenHQ databases',
-    defaultValue: null,
-    dest: 'apiKey'
-  }
-)
+
+parser.addArgument [ '-d', '--directory' ],
+  help: 'base directory for the RavenApp'
+  dest: 'directory'
+  required: true
+
+parser.addArgument [ '-n', '--name' ],
+  help: 'the name of the RavenApp'
+  dest: 'name'
+  required: true
+
+parser.addArgument [ '-s', '--store' ],
+  help: 'specify which data store to use (defaults to http://localhost:8080 if not specfied)'
+  defaultValue: 'http://localhost:8080'
+  dest: 'store'
+
+parser.addArgument [ '-db', '--database'],
+  help: 'specify which database to use (defaults to "Default" if not specified)'
+  defaultValue: 'Default'
+  dest: 'database'
+
+parser.addArgument [ '-key', '--apikey'],
+  help: 'specity the api key to use with RavenHQ databases',
+  defaultValue: null,
+  dest: 'apiKey'
+
 
 args = parser.parseArgs()
 
