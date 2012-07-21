@@ -9,7 +9,7 @@
     } 
   ],
   "bin": {
-    "ravenapp": "./lib/ravenapp.js"
+    "ravenapp": "./ravenapp.js"
   },
   "scripts": {
     "start": "ravenapp"
