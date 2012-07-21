@@ -17,12 +17,13 @@ addFiles = (appName, appDir, rootDir, db, callback) ->
           return
 
         if stat.isDirectory()
-          addFiles appName, appDir, filename, db, (err, cb) ->
+          addFiles appName, appDir, filename, db, (err, resp) ->
             if err?
               callback(err)
               return
             else
               console.log "Added files for #{filename}"
+              callback(null, resp)
 
         else
           # Save Attachment here
@@ -40,6 +41,7 @@ addFiles = (appName, appDir, rootDir, db, callback) ->
                 return
               else
                 console.log "Saved \"#{filename}\" to \"#{docId}\""
+                callback(null, result)
 
 
 
@@ -104,4 +106,6 @@ args = parser.parseArgs()
 
 saveApp args, (err, resp) ->
  if err? console.log err
- else console.log 'Done.'
+ else
+   console.log resp
+   console.log 'Done.'
