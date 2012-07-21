@@ -24,11 +24,12 @@
             return;
           }
           if (stat.isDirectory()) {
-            return addFiles(appName, appDir, filename, db, function(err, cb) {
+            return addFiles(appName, appDir, filename, db, function(err, resp) {
               if (err != null) {
                 callback(err);
               } else {
-                return console.log("Added files for " + filename);
+                console.log("Added files for " + filename);
+                return callback(null, resp);
               }
             });
           } else {
@@ -40,7 +41,8 @@
                 if (err != null) {
                   callback(err);
                 } else {
-                  return console.log("Saved \"" + filename + "\" to \"" + docId + "\"");
+                  console.log("Saved \"" + filename + "\" to \"" + docId + "\"");
+                  return callback(null, result);
                 }
               });
             });
@@ -124,6 +126,7 @@
     if (typeof err === "function" ? err(console.log(err)) : void 0) {
 
     } else {
+      console.log(resp);
       return console.log('Done.');
     }
   });
